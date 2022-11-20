@@ -1,11 +1,11 @@
 {
-  "name": "angular-electron",
-  "description": "Angular Electron sample",
+  "name": "jira-worklogs-lol",
+  "description": "Jira Worklogs \uD83D\uDE02",
   "author": {
-    "name": "Maxime GRIS",
-    "email": "maxime.gris@gmail.com"
+    "name": "Suresh Lasantha",
+    "email": "lasanthasuresh@gmail.com"
   },
-  "version": "11.2.0",
+  "version": "1.0.0",
   "main": "main.js",
   "private": true,
   "dependencies": {

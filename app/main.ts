@@ -17,18 +17,22 @@ function createWindow(): BrowserWindow {
     width: size.width,
     height: size.height,
     webPreferences: {
+      webSecurity: false,
       nodeIntegration: true,
-      allowRunningInsecureContent: (serve),
+      allowRunningInsecureContent: ( serve ),
       contextIsolation: false,  // false if you want to run e2e test with Spectron
     },
   });
-
+  win.webContents.on('new-window', function(e, url) {
+    e.preventDefault();
+    require('electron').shell.openExternal(url);
+  });
   if (serve) {
     const debug = require('electron-debug');
     debug();
 
-    require('electron-reloader')(module);
-    win.loadURL('http://localhost:4200');
+    require ('electron-reloader') (module);
+    win.loadURL ('http://localhost:4200', { userAgent: 'jira-worklog-lol' });
   } else {
     // Path when running electron executable
     let pathIndex = './index.html';
@@ -41,6 +45,7 @@ function createWindow(): BrowserWindow {
     const url = new URL(path.join('file:', __dirname, pathIndex));
     win.loadURL(url.href);
   }
+
 
   // Emitted when the window is closed.
   win.on('closed', () => {
@@ -81,3 +86,5 @@ try {
   // Catch Error
   // throw e;
 }
+// "started": "2022-11-02T12:00:00.000+0530"
+// "started": "2022-11-14T03:30:00.000Z"
