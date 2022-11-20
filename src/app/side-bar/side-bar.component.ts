@@ -1,7 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { JiraService } from '../jira.service';
 import { ProfileProviderService } from '../profile-provider.service';
-import { filter } from 'rxjs';
 
 @Component ({
   selector: 'app-side-bar',
@@ -9,6 +8,9 @@ import { filter } from 'rxjs';
   styleUrls: [ './side-bar.component.scss' ]
 })
 export class SideBarComponent implements OnInit {
+
+  @ViewChild ('ticketsList') ticketsList;
+
   tickets = [];
   filter: string;
 
@@ -17,8 +19,8 @@ export class SideBarComponent implements OnInit {
 
   get filteredTickets () {
     return this.tickets.filter (it => !Boolean (this.filter) ||
-      it.key.toLowerCase ().includes (this.filter) ||
-      it.summary.toLowerCase ().includes (this.filter)
+      it.key.toLowerCase ().includes (this.filter.toLowerCase()) ||
+      it.summary.toLowerCase ().includes (this.filter.toLowerCase())
     );
   }
 
@@ -27,5 +29,6 @@ export class SideBarComponent implements OnInit {
       console.log (data);
       this.tickets = data;
     });
+
   }
 }

@@ -3,6 +3,7 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { JiraService } from '../jira.service';
 import { ProfileProviderService } from '../profile-provider.service';
 import { WorklogService } from '../worklog.service';
+import { debounceTime, map, Observable, OperatorFunction } from 'rxjs';
 
 @Component ({
   selector: 'app-add-event-modal',
@@ -21,7 +22,6 @@ export class AddEventModalComponent implements OnInit {
   hasMultipleDates: boolean;
 
   dataModel = {
-    ticket: '',
     summary: '',
     affectingDate: null,
     affectingDateList: [],
@@ -31,6 +31,8 @@ export class AddEventModalComponent implements OnInit {
     comment: ''
   };
 
+  currentJira: any;
+  private recentJira: { key; url; summary }[];
 
   constructor(
     public activeModal: NgbActiveModal,
@@ -40,7 +42,22 @@ export class AddEventModalComponent implements OnInit {
   ) {
   }
 
-  public acceptParameters(prams){
+  search: OperatorFunction<string, readonly { key; url; summary }[]> = (text$: Observable<string>) =>
+    text$.pipe (
+      debounceTime (200),
+      map ((term) =>
+        this.recentJira.filter (v => this.metches (v, term)).slice (0, 10),
+      ),
+    );
+
+  metches = (element: { key; url; summary }, term) =>
+    !Boolean (term)
+    || element.key.toLowerCase ().includes (term.toLowerCase ())
+    || element.summary.toLowerCase ().includes (term.toLowerCase());
+
+  formatter = (x: { key; url; summary }) => `${x.key} - ${x.summary}` ;
+
+  public acceptParameters(prams) {
     const startDateStr = prams.startStr.substring (0, 10);
     const endDateStr = prams.endStr.substring (0, 10);
     this.hasMultipleDates = startDateStr !== endDateStr;
@@ -65,18 +82,10 @@ export class AddEventModalComponent implements OnInit {
     }
   }
 
-  refreshTicket(value: any) {
-    this.jiraService.getIssueSummary (value, this.profileProvider.userAccount)
-      .then (s => {
-        this.dataModel.summary = s;
-        this.dataModel.ticket = value;
-      }).catch (error => {
-      console.log (error);
-      this.dataModel.summary = '[error]';
-    });
-  }
-
   ngOnInit(): void {
+    this.jiraService.getRecentlyViewedTickets (this.profileProvider.userAccount).then (
+      jiras => this.recentJira = jiras
+    );
   }
 
   cancel() {
@@ -85,7 +94,6 @@ export class AddEventModalComponent implements OnInit {
   }
 
   async save() {
-    // return;
     await this.worklogService.saveWorkflows (this.getWorklogs());
     this.activeModal.close ('saved');
     this.saved.emit ('saved');
@@ -94,14 +102,14 @@ export class AddEventModalComponent implements OnInit {
   private getWorklogs() {
     if (this.hasMultipleDates) {
       return this.dataModel.affectingDateList.map (it => ( {
-        ticketId: this.dataModel.ticket,
+        ticketId: this.currentJira.key,
         timeSpent: this.dataModel.timeSpent,
         comment: this.dataModel.comment,
         started: this.convertToTime (it, this.dataModel.timeStarted),
       } ));
     } else {
       return [{
-        ticketId: this.dataModel.ticket,
+        ticketId: this.currentJira.key,
         timeSpent: this.dataModel.timeSpent,
         comment: this.dataModel.comment,
         started: this.convertToTime (this.dataModel.affectingDate, this.dataModel.timeStarted)

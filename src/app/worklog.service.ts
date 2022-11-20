@@ -1,7 +1,28 @@
 import { Injectable } from '@angular/core';
 import { ProfileProviderService } from './profile-provider.service';
 import { JiraService } from './jira.service';
-import { addWarning } from '@angular-devkit/build-angular/src/utils/webpack-diagnostics';
+
+const colorCodes = [
+  { backgroundColor: '#7B1FA2', borderColor: '#6A1B9A' },
+  { backgroundColor: '#C2185B', borderColor: '#AD1457' },
+  { backgroundColor: '#1976D2', borderColor: '#1565C0' },
+  { backgroundColor: '#689F38', borderColor: '#558B2F' },
+  { backgroundColor: '#FBC02D', borderColor: '#F9A825' },
+  { backgroundColor: '#303F9F', borderColor: '#283593' },
+  { backgroundColor: '#AFB42B', borderColor: '#9E9D24' },
+  { backgroundColor: '#388E3C', borderColor: '#2E7D32' },
+  { backgroundColor: '#FFA000', borderColor: '#FF8F00' },
+  { backgroundColor: '#616161', borderColor: '#424242' },
+  { backgroundColor: '#72544c', borderColor: '#694a43' },
+  { backgroundColor: '#D32F2F', borderColor: '#C62828' },
+  { backgroundColor: '#E64A19', borderColor: '#D84315' },
+  { backgroundColor: '#512DA8', borderColor: '#4527A0' },
+  { backgroundColor: '#00796B', borderColor: '#00695C' },
+  { backgroundColor: '#0097A7', borderColor: '#00838F' },
+  { backgroundColor: '#F57C00', borderColor: '#EF6C00' },
+  { backgroundColor: '#455A64', borderColor: '#37474F' },
+  { backgroundColor: '#0288D1', borderColor: '#0277BD' }
+];
 
 @Injectable ({
   providedIn: 'root'
@@ -19,10 +40,6 @@ export class WorklogService {
 
   getWorkLogById (id) {
     return this.allWorklogs.find (it => it.id === id);
-  }
-
-  async reloadWorklogs () {
-    this.allWorklogs = await this.jiraService.getAllWorklogs (this.profileService.userAccount);
   }
 
   async events (fromDate: Date, toDate: Date) {
@@ -98,13 +115,16 @@ export class WorklogService {
   }
 
   private toEvent (worklog) {
+    const color = colorCodes[worklog.issueId % colorCodes.length];
     return {
       start: worklog.started,
       end: worklog.end,
       title: `${ worklog.ticketKey } - ${ worklog.ticketSummary } (${ worklog.timeSpent })`,
       description: worklog.commentStr,
       id: worklog.id,
-      issueId: worklog.issueId
+      issueId: worklog.issueId,
+      backgroundColor: color.backgroundColor,
+      borderColor: color.borderColor
     };
   }
 

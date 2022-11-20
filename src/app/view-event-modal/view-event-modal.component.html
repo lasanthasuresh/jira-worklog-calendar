@@ -6,14 +6,8 @@
     <div class="modal-body">
         <div id="testmodal" style="padding: 5px 20px;">
             <form id="antoform" class="row g-3" role="form">
-                <div class="col-md-3">
-                    <label for="ticket" class="form-label">Ticket<sup class="mandatory">*</sup></label>
-                    <input type="text" name="ticket" readonly [value]="dataModel.ticket"
-                           class="form-control" id="ticket">
-                </div>
-                <div class="col-md-9">
-                    <label for="summary" class="form-label">Summary</label>
-                    <input type="text" [value]="dataModel.summary" readonly class="form-control" id="summary">
+                <div class="col-md-12">
+                    <strong>{{dataModel.ticket}}  </strong> - <span>{{dataModel.summary}}</span>
                 </div>
                 <div class="col-md-4">
                     <label for="date" class="form-label">Affecting Date</label>
