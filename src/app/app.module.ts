@@ -11,6 +11,8 @@ import { AddEventModalComponent } from './add-event-modal/add-event-modal.compon
 import { FormsModule } from '@angular/forms';
 import { ViewEventModalComponent } from './view-event-modal/view-event-modal.component';
 import { SideBarComponent } from './side-bar/side-bar.component';
+import { MainComponent } from './main/main.component';
+import { LoginComponent } from './login/login.component';
 
 FullCalendarModule.registerPlugins([
   dayGridPlugin,
@@ -24,7 +26,10 @@ FullCalendarModule.registerPlugins([
     AppComponent,
     AddEventModalComponent,
     ViewEventModalComponent,
-    SideBarComponent
+    MainComponent,
+    SideBarComponent,
+    MainComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,

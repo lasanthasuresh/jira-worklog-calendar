@@ -83,7 +83,7 @@ export class AddEventModalComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.jiraService.getRecentlyViewedTickets (this.profileProvider.userAccount).then (
+    this.jiraService.getRecentlyViewedTickets (this.profileProvider.currentAccount).then (
       jiras => this.recentJira = jiras
     );
   }

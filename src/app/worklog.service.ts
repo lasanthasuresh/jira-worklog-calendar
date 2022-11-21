@@ -44,7 +44,7 @@ export class WorklogService {
 
   async events (fromDate: Date, toDate: Date) {
     if (this.allWorklogs === undefined) {
-      this.allWorklogs = await this.jiraService.getAllWorklogs (this.profileService.userAccount);
+      this.allWorklogs = await this.jiraService.getAllWorklogs (this.profileService.currentAccount);
     }
     const toReturn = this.allWorklogs
       .filter (it => this.isInDateRange (it, fromDate, toDate))
@@ -58,7 +58,7 @@ export class WorklogService {
       workflow.map (
         it => this.jiraService.createWorklog (
           it,
-          this.profileService.userAccount
+          this.profileService.currentAccount
         )
       )
     );
@@ -66,7 +66,7 @@ export class WorklogService {
   }
 
   async reloadWorklogsForTickets (ticketIds: string[]) {
-    const worklogs = await this.jiraService.getAllWorklogs (this.profileService.userAccount, ticketIds);
+    const worklogs = await this.jiraService.getAllWorklogs (this.profileService.currentAccount, ticketIds);
 
     for ( const worklog of worklogs ) {
       const index = this.allWorklogs.findIndex (it => it.id === worklog.id);
@@ -82,7 +82,7 @@ export class WorklogService {
     const index = this.allWorklogs.findIndex (it => it.id === id);
     const worklog = this.allWorklogs[index];
     worklog.timeSpentSeconds += endDelta;
-    await this.jiraService.updateWorklog (worklog, this.profileService.userAccount);
+    await this.jiraService.updateWorklog (worklog, this.profileService.currentAccount);
     await this.reloadWorklogsForTickets ([ worklog.ticketKey ]);
   }
 
@@ -94,7 +94,7 @@ export class WorklogService {
     } else {
       worklog.started.setSeconds (worklog.started.getSeconds () + seconds);
     }
-    await this.jiraService.updateWorklog (worklog, this.profileService.userAccount);
+    await this.jiraService.updateWorklog (worklog, this.profileService.currentAccount);
     await this.reloadWorklogsForTickets ([ worklog.ticketKey ]);
   }
 
@@ -103,14 +103,14 @@ export class WorklogService {
     const index = this.allWorklogs.findIndex (it => it.id === param.id);
     const worklog = this.allWorklogs[index];
     worklog.commentStr = param.comment;
-    worklog.started= param.date
-    await this.jiraService.updateWorklog (worklog, this.profileService.userAccount);
+    worklog.started = param.date;
+    await this.jiraService.updateWorklog (worklog, this.profileService.currentAccount);
     await this.reloadWorklogsForTickets ([ worklog.ticketKey ]);
   }
 
   async deleteWorklog (id) {
     const worklog = this.getWorkLogById (id);
-    await this.jiraService.deleteWorklog (worklog, this.profileService.userAccount);
+    await this.jiraService.deleteWorklog (worklog, this.profileService.currentAccount);
     this.allWorklogs = this.allWorklogs.filter (it => it.id !== id);
   }
 

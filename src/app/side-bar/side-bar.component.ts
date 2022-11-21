@@ -25,7 +25,9 @@ export class SideBarComponent implements OnInit {
   }
 
   ngOnInit (): void {
-    this.jiraService.getRecentlyViewedTickets (this.profileService.userAccount).then (data => {
+    this.jiraService.getRecentlyViewedTickets (
+      this.profileService.currentAccount
+    ).then (data => {
       console.log (data);
       this.tickets = data;
     });
