@@ -139,4 +139,7 @@ export class MainComponent implements OnInit {
   }
 
 
+  doLogoff(event) {
+    this.logOff.emit ();
+  }
 }
