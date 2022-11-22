@@ -14,7 +14,7 @@ export class ProfileProviderService {
   }
 
   get currentAccount(): AccountInfo {
-    if (Boolean(this.account)) {
+    if (!Boolean(this.account)) {
       throw new Error('User is not logged in.');
     }
     return this.account;
