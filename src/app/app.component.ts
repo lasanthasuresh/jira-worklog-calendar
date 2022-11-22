@@ -5,7 +5,7 @@ import { ProfileProviderService } from './profile-provider.service';
 @Component ({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: [ './app.component.css' ]
+  styleUrls: [ './app.component.scss' ]
 })
 export class AppComponent implements OnInit {
 
@@ -24,7 +24,8 @@ export class AppComponent implements OnInit {
     this.loggedInUser = $event;
   }
 
-  onUserLoggOff ($event: any) {
+  async onUserLoggOff ($event: any) {
     this.loggedInUser = null;
+    await this.userProfilerService.resetProfile ();
   }
 }

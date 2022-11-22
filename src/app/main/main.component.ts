@@ -46,6 +46,7 @@ export class MainComponent implements OnInit {
     events: this.fetchEvents.bind (this),
     eventDrop: this.eventDrop.bind (this),
     eventResize: this.eventResize.bind (this),
+    height:'100%',
     /* you can update a remote database when these fire:
     eventAdd:
     eventChange:
@@ -56,7 +57,7 @@ export class MainComponent implements OnInit {
 
   private closeResult: string;
 
-  constructor (
+  constructor(
     private modalService: NgbModal,
     private jiraService: JiraService,
     private profileService: ProfileProviderService,
@@ -64,20 +65,20 @@ export class MainComponent implements OnInit {
   ) {
   }
 
-  ngOnInit () {
+  ngOnInit() {
   }
 
 
-  handleCalendarToggle () {
+  handleCalendarToggle() {
     this.calendarVisible = !this.calendarVisible;
   }
 
-  handleWeekendsToggle () {
+  handleWeekendsToggle() {
     const { calendarOptions } = this;
     calendarOptions.weekends = !calendarOptions.weekends;
   }
 
-  handleDateSelect (selectInfo: DateSelectArg) {
+  handleDateSelect(selectInfo: DateSelectArg) {
     const modelRef = this.modalService.open (AddEventModalComponent);
     modelRef.componentInstance.acceptParameters (selectInfo);
     modelRef.componentInstance.saved.subscribe (d => {
@@ -86,7 +87,7 @@ export class MainComponent implements OnInit {
     });
   }
 
-  handleEventClick (clickInfo: EventClickArg) {
+  handleEventClick(clickInfo: EventClickArg) {
     const modelRef = this.modalService.open (ViewEventModalComponent);
     modelRef.componentInstance.acceptParameters (clickInfo.event.id);
     modelRef.componentInstance.saved.subscribe (d => {
@@ -95,13 +96,13 @@ export class MainComponent implements OnInit {
     });
   }
 
-  fetchEvents (fetchInfo, success, failure) {
+  fetchEvents(fetchInfo, success, failure) {
     this.worklogService.events (fetchInfo.start, fetchInfo.end)
       .then (success)
       .then (fetchInfo);
   }
 
-  eventDrop (e) {
+  eventDrop(e) {
     if (e.delta.years !== 0 || e.delta.months !== 0) {
       e.revert ();
       return;
@@ -111,7 +112,7 @@ export class MainComponent implements OnInit {
     // .then (this.calendarComponent.getApi ().refetchEvents);
   }
 
-  eventResize (e) {
+  eventResize(e) {
     if (e.endDelta.days !== 0) {
       e.revert ();
       return;
@@ -124,13 +125,13 @@ export class MainComponent implements OnInit {
     // .then (this.calendarComponent.getApi ().refetchEvents);
   }
 
-  getProfile () {
+  getProfile() {
 
 
     this.jiraService.getProfile (this.profileService.currentAccount).then (result => console.log (result));
   }
 
-  getTickets () {
+  getTickets() {
     const modelRef = this.modalService.open (AddEventModalComponent);
     modelRef.componentInstance.input = { name: 'suresh' };
 

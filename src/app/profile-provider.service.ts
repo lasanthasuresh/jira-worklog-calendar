@@ -39,9 +39,9 @@ export class ProfileProviderService {
     this.account = profile;
   }
 
-  resetProfile() {
+  async resetProfile() {
     this.account = undefined;
-    localStorage.removeItem(CURRENT_ACCOUNT);
+    await window['store'].setSetting (CURRENT_ACCOUNT, null);
     // store.delete (CURRENT_ACCOUNT);
   }
 }
