@@ -3,4 +3,6 @@ export class AccountInfo {
   password: string;
   accountId: string;
   urlBase: string;
+  displayName = '';
+  avatarUrl = '';
 }
