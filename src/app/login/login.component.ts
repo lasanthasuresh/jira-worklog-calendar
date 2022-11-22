@@ -20,17 +20,17 @@ export class LoginComponent implements OnInit {
   @Output ()
   public loggedIn = new EventEmitter<AccountInfo> ();
 
-  constructor (private jiraService: JiraService, private userProfileService: ProfileProviderService) {
+  constructor(private jiraService: JiraService, private userProfileService: ProfileProviderService) {
   }
 
-  ngOnInit (): void {
+  ngOnInit(): void {
   }
 
-  goToHelpPage () {
+  goToHelpPage() {
 
   }
 
-  async tryLogin () {
+  async tryLogin() {
     const profile = {
       urlBase: this.loginProfiler.endpointUrl,
       username: this.loginProfiler.email,
@@ -41,7 +41,6 @@ export class LoginComponent implements OnInit {
     };
     const jiraProfile = await this.jiraService.getProfile (profile);
     if (jiraProfile) {
-      console.log (jiraProfile);
       profile.accountId = jiraProfile.accountId;
       profile.displayName = jiraProfile.displayName;
       await this.userProfileService.setUserProfile (profile, this.loginProfiler.rememberMe);

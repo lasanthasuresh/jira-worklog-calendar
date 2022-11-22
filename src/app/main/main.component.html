@@ -1,12 +1,13 @@
-<div class='demo-app'>
-
-    <app-side-bar></app-side-bar>
-
-    <div class='demo-app-main'>
-        <full-calendar #calendarComponent
-                       *ngIf='calendarVisible'
-                       [options]='calendarOptions'
-        ></full-calendar>
-    </div>
-
+<app-side-bar class="side-bar"></app-side-bar>
+<div class='demo-app-main d-flex flex-column'>
+    <full-calendar #calendarComponent
+                   *ngIf='calendarVisible'
+                   [options]='calendarOptions'
+    ></full-calendar>
 </div>
+
+
+
+
+
+
