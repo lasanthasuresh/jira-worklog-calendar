@@ -1,17 +1,29 @@
-import { app, BrowserWindow, screen, ipcMain } from 'electron';
+import { app, BrowserWindow, screen, ipcMain, safeStorage } from 'electron';
 import * as path from 'path';
 import * as fs from 'fs';
 import * as settings from 'electron-settings';
 
 const getSetting = async (event, key: string) => {
-  const value = await settings.get (key);
-  console.log (`getSetting(${ key }) = ${ value }`);
-  return value;
+  const value = await settings.get (key) as string;
+  if (!Boolean (value) || !safeStorage.isEncryptionAvailable ()) {
+    return value;
+  }
+  const buff = new Buffer (value, 'base64');
+  return safeStorage.decryptString (buff);
 };
 
-const setSetting = async (event, key: string, value: any) => {
-  console.log (`setSetting(${ key },${ value })`);
-  await settings.set (key, value);
+const setSetting = async (event, key: string, value: string) => {
+
+  if (!Boolean (value)) {
+    await settings.set (key, value);
+  }
+
+  if (!safeStorage.isEncryptionAvailable ()) {
+    await settings.set (key, value);
+  }
+  const encrypted = safeStorage.encryptString (value);
+  const encoded = encrypted.toString ('base64');
+  await settings.set (key, encoded);
 };
 
 let win: BrowserWindow = null;
