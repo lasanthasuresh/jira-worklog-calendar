@@ -68,7 +68,7 @@ function createWindow (): BrowserWindow {
     }
 
     const url = new URL(path.join('file:', __dirname, pathIndex));
-    win.loadURL(url.href);
+    win.loadURL(url.href,{ userAgent: 'jira-worklog-lol' });
   }
 
 
