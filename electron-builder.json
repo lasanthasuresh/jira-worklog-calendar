@@ -3,6 +3,7 @@
   "directories": {
     "output": "release/"
   },
+  "includeSubNodeModules": true,
   "files": [
     "**/*",
     "!**/*.ts",

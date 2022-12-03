@@ -1,6 +1,6 @@
 {
   "name": "jira-worklogs-lol",
-  "description": "Jira Worklogs \uD83D\uDE02",
+  "description": "Jira Worklogs 😂",
   "author": {
     "name": "Suresh Lasantha",
     "email": "lasanthasuresh@gmail.com"
@@ -9,5 +9,6 @@
   "main": "main.js",
   "private": true,
   "dependencies": {
+    "electron-settings": "^4.0.2"
   }
 }
