@@ -11,20 +11,20 @@ export class AppComponent implements OnInit {
 
   loggedInUser: AccountInfo;
 
-  constructor (private userProfilerService: ProfileProviderService) {
+  constructor(private userProfilerService: ProfileProviderService) {
   }
 
-  ngOnInit () {
+  ngOnInit() {
     this.userProfilerService.currentAccountAsync ().then (profile => {
       this.loggedInUser = profile;
     });
   }
 
-  onUserLoggedIn ($event: AccountInfo) {
+  onUserLoggedIn($event: AccountInfo) {
     this.loggedInUser = $event;
   }
 
-  async onUserLoggOff ($event: any) {
+  async onUserLoggOff($event: any) {
     this.loggedInUser = null;
     await this.userProfilerService.resetProfile ();
   }

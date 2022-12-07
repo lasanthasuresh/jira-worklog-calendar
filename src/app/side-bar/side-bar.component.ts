@@ -14,17 +14,17 @@ export class SideBarComponent implements OnInit {
   tickets = [];
   filter: string;
 
-  constructor (private profileService: ProfileProviderService, private jiraService: JiraService) {
+  constructor(private profileService: ProfileProviderService, private jiraService: JiraService) {
   }
 
-  get filteredTickets () {
+  get filteredTickets() {
     return this.tickets.filter (it => !Boolean (this.filter) ||
       it.key.toLowerCase ().includes (this.filter.toLowerCase()) ||
       it.summary.toLowerCase ().includes (this.filter.toLowerCase())
     );
   }
 
-  ngOnInit (): void {
+  ngOnInit(): void {
     this.jiraService.getRecentlyViewedTickets (
       this.profileService.currentAccount
     ).then (data => {

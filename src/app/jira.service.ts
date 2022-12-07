@@ -6,10 +6,10 @@ import { AccountInfo } from './account-info';
   providedIn: 'root'
 })
 export class JiraService {
-  constructor () {
+  constructor() {
   }
 
-  async getProfile (accountInfo: AccountInfo) {
+  async getProfile(accountInfo: AccountInfo) {
     const userProfiles = await axios.get (
       `${ accountInfo.urlBase }/rest/api/3/user/search?query=${ accountInfo.username }`,
       this.authConfig (accountInfo)
@@ -18,7 +18,7 @@ export class JiraService {
   }
 
 
-  async getRecentlyViewedTickets (accountInfo: AccountInfo) {
+  async getRecentlyViewedTickets(accountInfo: AccountInfo) {
     const jql = 'order by lastViewed DESC';
     const response = await axios.get (
       `${ accountInfo.urlBase }/rest/api/3/search?jql=${ jql }&fields=summary&maxResults=250`,
@@ -34,7 +34,7 @@ export class JiraService {
     } ));
   }
 
-  async getIssueSummary (ticketId: string, accountInfo: AccountInfo) {
+  async getIssueSummary(ticketId: string, accountInfo: AccountInfo) {
     const issue = await axios.get (
       `${ accountInfo.urlBase }/rest/api/3/issue/${ ticketId }?fields=summary`,
       this.authConfig (accountInfo)
@@ -42,7 +42,7 @@ export class JiraService {
     return issue.data.fields.summary;
   }
 
-  async createWorklog (data, accountInfo) {
+  async createWorklog(data, accountInfo) {
     const url = `${ accountInfo.urlBase }/rest/api/3/issue/${ data.ticketId }/worklog`;
     const object = {
       timeSpent: data.timeSpent, // 60m
@@ -71,7 +71,7 @@ export class JiraService {
     console.log (response);
   }
 
-  async updateWorklog (data, accountInfo) {
+  async updateWorklog(data, accountInfo) {
     console.log (data);
     const url = `${ accountInfo.urlBase }/rest/api/3/issue/${ data.ticketKey }/worklog/${ data.id }`;
     const object = {
@@ -102,7 +102,7 @@ export class JiraService {
     return response.data;
   }
 
-  async getAllWorklogs (accountInfo, ticketIds: string[] = null) {
+  async getAllWorklogs(accountInfo, ticketIds: string[] = null) {
     const jql = Boolean (ticketIds)
       ? `key in (${ ticketIds.join (',') })`
       : `worklogAuthor=currentUser() order by lastViewed`;
@@ -149,7 +149,7 @@ export class JiraService {
   }
 
 
-  async deleteWorklog (data: any, accountInfo) {
+  async deleteWorklog(data: any, accountInfo) {
     const url = `${ accountInfo.urlBase }/rest/api/3/issue/${ data.ticketKey }/worklog/${ data.id }`;
     const response = await axios.delete (
       url,
@@ -159,13 +159,13 @@ export class JiraService {
     return response.data;
   }
 
-  private commentStr (comment) {
+  private commentStr(comment) {
     return comment?.content?.map (
       it => it?.content?.map (c => c?.text).join ('\n')
     ).join ('\n');
   }
 
-  private authConfig (accountInfo: AccountInfo) {
+  private authConfig(accountInfo: AccountInfo) {
     return {
       auth: {
         username: accountInfo.username,

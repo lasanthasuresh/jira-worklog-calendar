@@ -2,6 +2,7 @@ import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { AccountInfo } from '../account-info';
 import { JiraService } from '../jira.service';
 import { ProfileProviderService } from '../profile-provider.service';
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 
 @Component ({
   selector: 'app-login',
@@ -10,6 +11,9 @@ import { ProfileProviderService } from '../profile-provider.service';
 })
 export class LoginComponent implements OnInit {
 
+  @Output ()
+  public loggedIn = new EventEmitter<AccountInfo> ();
+
   loginProfiler = {
     endpointUrl: '',
     email: '',
@@ -17,10 +21,9 @@ export class LoginComponent implements OnInit {
     rememberMe: false,
   };
 
-  @Output ()
-  public loggedIn = new EventEmitter<AccountInfo> ();
+  public helpLoaded = false;
 
-  constructor(private jiraService: JiraService, private userProfileService: ProfileProviderService) {
+  constructor(private jiraService: JiraService, private modalService: NgbModal, private userProfileService: ProfileProviderService) {
   }
 
   ngOnInit(): void {
@@ -46,5 +49,13 @@ export class LoginComponent implements OnInit {
       await this.userProfileService.setUserProfile (profile, this.loginProfiler.rememberMe);
       this.loggedIn.next (profile);
     }
+  }
+
+  showHelp( content ) {
+    this.modalService.open(content, { size: 'xl', ariaLabelledBy: 'modal-basic-title' });
+  }
+
+  hideme() {
+    this.helpLoaded = true;
   }
 }

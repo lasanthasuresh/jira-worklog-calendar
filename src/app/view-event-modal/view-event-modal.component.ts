@@ -32,22 +32,22 @@ export class ViewEventModalComponent implements OnInit {
     comment: ''
   };
 
-  constructor (
+  constructor(
     public activeModal: NgbActiveModal,
     private jiraService: JiraService,
     private worklogService: WorklogService,
   ) {
   }
 
-  get hasChanged () {
+  get hasChanged() {
     return this.dataModel.comment !== this.newDataModel.comment
       || this.dataModel.affectingDate !== this.newDataModel.affectingDate;
   }
 
-  ngOnInit (): void {
+  ngOnInit(): void {
   }
 
-  public acceptParameters (id) {
+  public acceptParameters(id) {
     const worklog = this.worklogService.getWorkLogById (id);
     this.dataModel.id = id;
     this.dataModel.ticket = worklog.ticketKey;
@@ -64,7 +64,7 @@ export class ViewEventModalComponent implements OnInit {
   }
 
 
-  async save () {
+  async save() {
     await this.worklogService.updateWorklog ({
       id: this.dataModel.id,
       date: this.newDataModel.affectingDate,
@@ -74,7 +74,7 @@ export class ViewEventModalComponent implements OnInit {
     this.saved.emit ('saved');
   }
 
-  async delete () {
+  async delete() {
     if (confirm (`Are you sure you want to delete the worklog? `)) {
       await this.worklogService.deleteWorklog (this.dataModel.id);
       this.activeModal.close ('saved');
@@ -84,12 +84,12 @@ export class ViewEventModalComponent implements OnInit {
   }
 
 
-  cancel () {
+  cancel() {
     this.activeModal.close ('cancel');
     this.canceled.emit ('cancel');
   }
 
-  onDateChange ($event: Event) {
+  onDateChange($event: Event) {
     this.newDataModel.affectingDate = new Date(`${($event.target as HTMLInputElement).value}T${this.dataModel.timeStarted}`);
   }
 }

@@ -22,7 +22,7 @@ export class ProfileProviderService {
 
   async currentAccountAsync(): Promise<AccountInfo> {
     if (this.account === undefined) {
-      const accountStr = await window['store'].getSetting (CURRENT_ACCOUNT) as string;
+      const accountStr = await window.store.getSetting (CURRENT_ACCOUNT) as string;
       if (accountStr) {
         this.account = JSON.parse (accountStr);
       } else {
@@ -34,14 +34,14 @@ export class ProfileProviderService {
 
   async setUserProfile(profile: AccountInfo, rememberMe: boolean) {
     if (rememberMe) {
-      await window['store'].setSetting (CURRENT_ACCOUNT, JSON.stringify (profile));
+      await window.store.setSetting (CURRENT_ACCOUNT, JSON.stringify (profile));
     }
     this.account = profile;
   }
 
   async resetProfile() {
     this.account = undefined;
-    await window['store'].setSetting (CURRENT_ACCOUNT, null);
+    await window.store.setSetting (CURRENT_ACCOUNT, null);
     // store.delete (CURRENT_ACCOUNT);
   }
 }

@@ -1,0 +1,17 @@
+.spinner{
+  text-align: center;
+  margin: auto;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+
+.input-group-append .input-group-text {
+  border-bottom-left-radius: 0;
+  border-top-left-radius: 0;
+}
+.input-group-prepend .input-group-text {
+  border-bottom-right-radius: 0;
+  border-top-right-radius: 0;
+}
