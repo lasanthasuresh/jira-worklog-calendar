@@ -172,6 +172,7 @@ export class JiraService {
         password: accountInfo.password
       },
       headers: {
+        // eslint-disable-next-line @typescript-eslint/naming-convention
         'X-Atlassian-Token': 'no-check'
       }
     };
